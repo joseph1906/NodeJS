@@ -135,3 +135,6 @@ console.log(`Operating System Platform: ${platform}`);
 
 const type = require('os').type();
 console.log(`operating System Type: ${type}`);
+
+const tmpdir = require('os').tmpdir();
+console.log(`Temporary Directory: ${tmpdir}`);
