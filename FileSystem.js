@@ -114,3 +114,24 @@ async function DeleteDire(dirPath) {
 }
 
 DeleteFunction('directory-to-delete');
+
+const BaseWork = require('path');
+const filename = BaseWork.basename('/path/to/sajapp.jpg');
+console.log(filename);
+
+
+const route = require('path');
+const routePath = route.extname('sajapp.jpg');
+console.log(routePath);
+
+const os = require('os');
+const totalMemGB = (os.totalmem() / (1024 * 1024 * 1024)).toFixed(2);
+
+const Architecture = require('os');
+console.log(`CPU Architecture: ${os.arch()}`);
+
+const platform = require('os').platform();
+console.log(`Operating System Platform: ${platform}`);
+
+const type = require('os').type();
+console.log(`operating System Type: ${type}`);
