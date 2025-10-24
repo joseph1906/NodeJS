@@ -157,3 +157,16 @@ http.createServer(function (req, res) {
         return res.end();
     });
 }).listen(8080);
+
+const TextBuf = Buffer.from('SAYEN');
+console.log(TextBuf);
+ const buf = Buffer.alloc(20);
+ buf.fill(10);
+ console.log(buf);
+
+ const buff = Buffer.alloc(24);
+ console.log(buff);
+ buff[4] = 98;
+ buff[7] = 19;
+ buff.write('Hello Bro', 9);
+ console.log(buff.toString());
