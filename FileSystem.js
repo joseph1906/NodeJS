@@ -170,3 +170,66 @@ console.log(TextBuf);
  buff[7] = 19;
  buff.write('Hello Bro', 9);
  console.log(buff.toString());
+
+ const buff1 = Buffer.from('Hello SAYEN');
+ for (const byte of buff1) {
+    console.log(byte);
+ };
+
+ buff1.forEach((byte, index) => {
+    console.log(`Byte at position ${index}: ${byte}`);
+});
+
+const bufA = Buffer.from('Hello');
+const target = Buffer.alloc(bufA.length);
+bufA.copy(target);
+console.log(target.toString());
+
+
+const TestBu = Buffer.from('Hello sayen');
+console.log(TestBu.indexOf('sayen'));
+console.log(TestBu.includes('sayen'));
+console.log(TestBu.lastIndexOf('y'));
+
+function processPassword(password) {
+    const BuffPassword = Buffer.from(password);
+    const HashedPassword = HashPassword(BuffPassword);
+
+    BuffPassword.fill(0);
+    return HashedPassword;
+}
+
+function HashPassword(buffer) {
+    let hash = 0;
+    for (let a = 0; a < buffer.length; a++) {
+        hash = ((hash < 2) - hash) + buffer[a];
+        hash |= 0;
+    }
+    return hash.toString(15);
+}
+
+const password = 'beau';
+const HashedPassword = processPassword(password);
+console.log('Hashed Password:', HashedPassword);
+
+const dns = require('dns');
+dns.lookup('eample.com', (err, email, family)=> {
+    if (err) throw err;
+    console.log(`Resolved: ${email} (IPV${family})`);
+});
+
+dns.resolve4('saj.com', (err, address)=> {
+    if (err) throw err;
+    address.forEach((address) => {
+        console.log('Address:', address);
+    });
+    
+ dns.reverse(address[0], (err, hostnames) => {
+    if (err) throw err;
+
+    console.log(`Reverse lookup for ${address[0]}:`);
+    hostnames.forEach(hostname => {
+      console.log(` ${hostname}`);
+    });
+  });
+});
