@@ -244,25 +244,15 @@ resolver.resolve4('sayen.com', (err, addresses) => {
     })
 })
 
-const util = require('util');
-const lookup = util.promisify(dns.lookup);
-const dnsCache = new Map();
 
-async function asyncLookup(domain) {
-    if (dnsCache.has(domain)) {
-    console.log('Cache hit for:', domain);
-    return dnsCache.get(domain);
-    }
-    console.log('Cache miss for:', domain);
-    const result = await lookup(domain);
-    dnsCache.set(domain, result);
-    return result;
-}
+const express = require('express');
+const appB = express();
+const portB = 8080;
 
-(async () => {
-    const domains = ['saj.com', 'example.com', 'saj.com'];
-    for (const domain of domains) {
-        const result = await asyncLookup(domain);
-        console.log(`Resolved ${domain} -> ${result.address}`);
-    }
+appB.get('/', (req, res) => {
+    res.send('boooooooooooo');
+})
+
+appB.listen(portB, () => {
+    console.log(`the path at http://localhost:${portB}`);
 })
