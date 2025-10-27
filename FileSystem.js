@@ -233,3 +233,36 @@ dns.resolve4('saj.com', (err, address)=> {
     });
   });
 });
+
+const resolver = new dns.Resolver();
+resolver.setServers(['9.9.9.9', '8.8.8.8']);
+resolver.resolve4('sayen.com', (err, addresses) => {
+    if (err) throw err;
+    console.log('hiiiiiiiiii');
+    addresses.forEach(addr => {
+        console.log(`${addr}`);
+    })
+})
+
+const util = require('util');
+const lookup = util.promisify(dns.lookup);
+const dnsCache = new Map();
+
+async function asyncLookup(domain) {
+    if (dnsCache.has(domain)) {
+    console.log('Cache hit for:', domain);
+    return dnsCache.get(domain);
+    }
+    console.log('Cache miss for:', domain);
+    const result = await lookup(domain);
+    dnsCache.set(domain, result);
+    return result;
+}
+
+(async () => {
+    const domains = ['saj.com', 'example.com', 'saj.com'];
+    for (const domain of domains) {
+        const result = await asyncLookup(domain);
+        console.log(`Resolved ${domain} -> ${result.address}`);
+    }
+})
