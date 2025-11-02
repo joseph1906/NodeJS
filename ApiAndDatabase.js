@@ -2,55 +2,22 @@ const express = require('express');
 const app = express();
 const port = 8080;
 
-app.get('/search', (req, res) => {
-    const {q, category} = req.query;
-    res.send(`Search query: ${q}, Category: ${category} || none`);
+
+const Joi = require("joi");
+
+const userSchema = Joi.object({
+    name: Joi.string().min(3).required(),
+    email: Joi.string().email().required(),
+    age: Joi.string().min(18).required()
 });
 
-app.listen(port, () => {
-    console.log(`Example of the port http://localhost:${port}`);
-})
+app.post('api/users', (req, res) => {
+    const { error } = userSchema.validate(req.body);
+    if (error) {
+        return res.status(404).json({message: error.detail[0].message});
+    }
 
-let users = [
-    {id:1, name:"jhon", gmail:"josephsajsawasawa@gmail.com"},
-    {id:2, name:"body", gmail: 'example@gmail.com'}
-];
-
-app.use(express.json());
-app.get('api/users', (req, res) => {
-    res.json("not found")
+    res.status(201).json({message: 'User created successfully'});
 });
 
-app.get('api/users/:id', (req, res) => {
-    const user = users.find(u => u.id === parseInt(res.params.id));
-    if (!user) return res.status(404).json({message: 'User not found'});
-    res.json(user);
-});
-
-app.post('/app/users', (req, res) => {
-    const newUser = {
-        id: users.length+1,
-        name: req.body.name,
-        email: req.body.email
-    };
-    users.push(newUser);
-    res.status(201).json(newUser);
-});
-
-app.put('api/users/id', (req,res) => {
-    const user = users.find(u => u.id === parseInt(req.params.id));
-    if (!user) return res.status(404).json({message:'User not found'});
-
-    user.name = req.body.name;
-    user.email = req.body.email;
-
-    res.json(user);
-})
-
-app.delete('api/users/:id', (req,res) => {
-    const userIndex = users.findIndex(u => u.id === parseInt(req.params.id));
-    if (userIndex === -1) return res.status(404).json({message:"user not found"});
-
-    const deleteUser = users.splice(userIndex, 1);
-    res.json(deleteUser[0]);
-});
+app.listen(port);
