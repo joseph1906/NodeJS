@@ -21,3 +21,29 @@ app.post('api/users', (req, res) => {
 });
 
 app.listen(port);
+
+const session = require('express-session');
+const bodyParser = require('body-parser');
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
+app.use(session({
+    secret: 'SAJ',
+    resave: false,
+    cookie: { secure: process.env.NODE_ENV === 'PRODUCTION', maxAge: 24 * 60 * 60 * 1000}
+}));
+
+const users = [
+    {id:1, username: 'user' , password: 'password'}
+];
+
+app.post('/login', (req, res) => {
+    const { username, password} = req.body;
+
+    const user = users.find(u => u.username === username && u.password === password);
+
+    if (!user) {
+        return res.status(401).json({message: 'Invalid credentials'});
+    }
+})
