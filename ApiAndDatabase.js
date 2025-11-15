@@ -2,7 +2,6 @@ const express = require('express');
 const app = express();
 const port = 8080;
 
-
 const Joi = require("joi");
 
 const userSchema = Joi.object({
@@ -46,4 +45,40 @@ app.post('/login', (req, res) => {
     if (!user) {
         return res.status(401).json({message: 'Invalid credentials'});
     }
+});
+
+let mysql = require('mysql');
+let connection = mysql.createConnection({
+    host: "127.0.0.1",
+    user: "root",
+    password: "Mamanalucie1906@@",
+})
+
+connection.connect(function(err) {
+    if (err) console.log(err);
+    console.log("connected");
+})
+
+connection.connect(function(err) {
+    if (err) throw err;
+    console.log("connected");
+    connection.query(sql, function(err, result) {
+        if (err) throw err;
+        console.log("Result:" + result);
+    });
+});
+
+connection.query(function(err) {
+    if (err) throw err;
+    console.log("Connected");
+    let sqlcode = "CREATE DATABASE SAJ; USE SAJ; CREATE TABLE Goku(Id INT (255) NOT NULL PRIMARY KEY)";
+    let testCode = "DROP TABLE Goku"
+    connection.query(sqlcode, function(err, result){
+        if (err) throw err;
+        console.log("Table created");
+    });
+    connection.query(testCode, function(err, result){
+        if (err) throw err;
+        console.log("Table dropped");
+    });
 })
